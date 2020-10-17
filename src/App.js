@@ -33,36 +33,38 @@ function App() {
         <LoadingOutlined />
       ) : (
         <Fragment>
-          <Row type="flex" gutter={32}>
-            <Col>
-              <ExportManager onCompleted={handleOnComplete} />
-            </Col>
-            {downloadData && (
-              <Col>
-                <Button
-                  type="dashed"
-                  icon={<RedoOutlined />}
-                  onClick={handleOnReload}
-                >
-                  Upload New file
-                </Button>
-              </Col>
-            )}
-          </Row>
+          <ExportManager onCompleted={handleOnComplete} />
+
+          <Separator />
 
           {downloadData && (
-            <DownloadLinkContainer>
-              <CsvDownloader
-                filename={dayjs().format()}
-                separator=","
-                wrapColumnChar={'"'}
-                datas={downloadData}
-                columns={createColumns(downloadData[0])}
-                text="Download"
-              >
-                <Button type="primary">Download</Button>
-              </CsvDownloader>
-            </DownloadLinkContainer>
+            <Row type="flex" gutter={32}>
+              <Col>
+                <DownloadLinkContainer>
+                  <CsvDownloader
+                    filename={dayjs().format()}
+                    separator=","
+                    wrapColumnChar={'"'}
+                    datas={downloadData}
+                    columns={createColumns(downloadData[0])}
+                    text="Download"
+                  >
+                    <Button type="primary">Download</Button>
+                  </CsvDownloader>
+                </DownloadLinkContainer>
+              </Col>
+              {downloadData && (
+                <Col>
+                  <Button
+                    type="dashed"
+                    icon={<RedoOutlined />}
+                    onClick={handleOnReload}
+                  >
+                    Upload New file
+                  </Button>
+                </Col>
+              )}
+            </Row>
           )}
         </Fragment>
       )}
@@ -106,7 +108,7 @@ function App() {
 export default App;
 
 const Title = styled.h1`
-  margin-bottom: 36px;
+  margin-bottom: 32px;
   padding-bottom: 8px;
   border-bottom: 2px solid black;
   font-size: 24px;
@@ -116,9 +118,11 @@ const AppLayout = styled.div`
   padding: 24px;
 `;
 
-const DownloadLinkContainer = styled.div`
-  margin-top: 24px;
+const Separator = styled.div`
+  margin-bottom: 32px;
+`;
 
+const DownloadLinkContainer = styled.div`
   > * {
     display: inline-block;
     outline: none;
