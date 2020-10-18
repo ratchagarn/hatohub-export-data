@@ -9,7 +9,7 @@ import { formatBytes } from 'helpers/utils'
 
 const uploadInputID = 'react-csv-reader-input'
 
-function ExportManager({ provider, onCompleted }) {
+function ExportManager({ brand, onCompleted }) {
   const [uploadFileInfo, setUploadFileInfo] = useState()
   const inputUpload = useRef()
 
@@ -39,7 +39,7 @@ function ExportManager({ provider, onCompleted }) {
   }
 
   function hansleOnFilLoaded(rawData, fileInfo) {
-    const service = services[provider]
+    const service = services[brand]
 
     if (typeof service !== 'function') {
       return
@@ -59,17 +59,17 @@ function ExportManager({ provider, onCompleted }) {
       return result
     })
 
-    onCompleted(service(csvData), provider)
+    onCompleted(service(csvData), brand)
   }
 }
 
 ExportManager.propTypes = {
-  provider: PropTypes.string.isRequired,
+  brand: PropTypes.string.isRequired,
   onCompleted: PropTypes.func,
 }
 
 ExportManager.defaultProps = {
-  provider: 'foodPanda',
+  brand: 'foodPanda',
   onCompleted: () => {},
 }
 

@@ -95,8 +95,8 @@ function App() {
     setLoading(true)
   }
 
-  function handleOnComplete(result, provider) {
-    if (provider === 'foodPanda') {
+  function handleOnComplete(result, brand) {
+    if (brand === 'foodPanda') {
       const downloadContent = []
 
       result.forEach((row) => {
@@ -107,7 +107,7 @@ function App() {
 
       setDownloadData(downloadContent)
     } else {
-      message.error(`We are not support provider: ${provider}`)
+      message.error(`We are not support brand: ${brand}`)
     }
   }
 
