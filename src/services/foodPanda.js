@@ -1,4 +1,5 @@
 function foodPanda(csvData) {
+  let _id = 0
   const rawLineItemData = csvData.map((record) => record.Items)
 
   const result = rawLineItemData
@@ -45,7 +46,10 @@ function foodPanda(csvData) {
       )
       const option = item.match(/\[(.+)\]/)
 
+      _id += 1
+
       return {
+        _id,
         qty: qty ? Number(qty[0]) : null,
         store: store ? store[1] : null,
         menu: menu ? (menu[1] ? menu[1] : menu[2]) : null,

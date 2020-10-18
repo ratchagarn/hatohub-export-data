@@ -1,1 +1,5 @@
 @import '~antd/dist/antd.css';
+
+.ant-table-content {
+  border: 1px solid ghostwhite;
+}

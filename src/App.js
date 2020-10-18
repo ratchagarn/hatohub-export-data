@@ -1,7 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Row, Col, Button, message } from 'antd'
-import { LoadingOutlined, RedoOutlined } from '@ant-design/icons'
+import { Row, Col, Table, Button, message } from 'antd'
+import {
+  DownloadOutlined,
+  LoadingOutlined,
+  RedoOutlined,
+} from '@ant-design/icons'
 import CsvDownloader from 'react-csv-downloader'
 import dayjs from 'dayjs'
 
@@ -53,22 +57,33 @@ function App() {
           <Separator />
 
           {downloadData && (
-            <Row type="flex" gutter={32}>
-              <Col>
-                <DownloadLinkContainer>
-                  <CsvDownloader
-                    filename={dayjs().format()}
-                    separator=","
-                    wrapColumnChar={'"'}
-                    datas={downloadData}
-                    columns={createColumns(downloadData[0])}
-                    text="Download"
-                  >
-                    <Button type="primary">Download</Button>
-                  </CsvDownloader>
-                </DownloadLinkContainer>
-              </Col>
-            </Row>
+            <Fragment>
+              <Row type="flex" gutter={32}>
+                <Col>
+                  <DownloadLinkContainer>
+                    <CsvDownloader
+                      filename={dayjs().format()}
+                      separator=","
+                      wrapColumnChar={'"'}
+                      datas={downloadData}
+                      columns={createFieldColumnsForCSV(downloadData[0])}
+                      text="Download CSV"
+                    >
+                      <Button type="primary" icon={<DownloadOutlined />}>
+                        Download CSV
+                      </Button>
+                    </CsvDownloader>
+                  </DownloadLinkContainer>
+                </Col>
+              </Row>
+
+              <TableTitle>Output Preview</TableTitle>
+              <Table
+                rowKey="_id"
+                dataSource={downloadData}
+                columns={createTableColumn(downloadData[0])}
+              />
+            </Fragment>
           )}
         </Fragment>
       )}
@@ -95,17 +110,33 @@ function App() {
     }
   }
 
-  function createColumns(firstRow) {
+  function createFieldColumnsForCSV(firstRow) {
     if (!firstRow) {
       return
     }
 
-    const columns = Object.keys(firstRow).map((key) => ({
-      id: key,
-      displayName: key,
-    }))
+    const columns = Object.keys(firstRow)
+      .slice(1)
+      .map((key) => ({
+        id: key,
+        displayName: key,
+      }))
 
     return columns
+  }
+
+  function createTableColumn(firstRow) {
+    if (!firstRow) {
+      return
+    }
+
+    return Object.keys(firstRow)
+      .slice(1)
+      .map((key) => ({
+        title: key,
+        dataIndex: key,
+        key,
+      }))
   }
 }
 
@@ -116,6 +147,11 @@ const Title = styled.h1`
   padding-bottom: 8px;
   border-bottom: 2px solid black;
   font-size: 24px;
+`
+
+const TableTitle = styled.h3`
+  margin-top: 32px;
+  font-size: 20px;
 `
 
 const AppLayout = styled.div`
