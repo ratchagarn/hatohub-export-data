@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Row, Col, Table, Button, message } from 'antd'
+import { Row, Col, Table, Button, Tag, message } from 'antd'
 import { DownloadOutlined, RedoOutlined } from '@ant-design/icons'
 import CsvDownloader from 'react-csv-downloader'
 import dayjs from 'dayjs'
@@ -9,6 +9,7 @@ import Loading from 'components/Loading'
 import ExportManager from 'components/ExportManager'
 
 import './App.css'
+import packageJson from '../package.json'
 
 function App() {
   const [loading, setLoading] = useState(false)
@@ -29,7 +30,11 @@ function App() {
 
   return (
     <AppLayout>
-      <Title>Hatohub Export Data</Title>
+      <Title>
+        Hatohub Export Data
+        <Version>v{packageJson.version}</Version>
+      </Title>
+
       {loading ? (
         <Loading />
       ) : (
@@ -171,4 +176,12 @@ const DownloadLinkContainer = styled.div`
       }
     }
   }
+`
+
+const Version = styled(Tag).attrs({
+  color: 'blue',
+})`
+  position: relative;
+  top: -4px;
+  margin-left: 12px;
 `
