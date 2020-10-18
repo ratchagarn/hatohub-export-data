@@ -1,40 +1,69 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Button } from 'antd'
+import { Form, Row, Col, Select, Button } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import CSVReader from 'react-csv-reader'
 import services from 'services'
-import { formatBytes } from 'helpers/utils'
+import { camelCaseToWord, formatBytes } from 'helpers/utils'
+import serviceName from 'variables/serviceName'
 
 const uploadInputID = 'react-csv-reader-input'
+const { Option } = Select
+const serviceNameList = Object.keys(serviceName)
 
-function ExportManager({ brand, onCompleted }) {
+function ExportManager({ onCompleted }) {
+  const [serviceName, setServiceName] = useState()
   const [uploadFileInfo, setUploadFileInfo] = useState()
   const inputUpload = useRef()
 
   return (
-    <ExportManagerWrapper>
-      <CSVReader inputId={uploadInputID} onFileLoaded={hansleOnFilLoaded} />
-      {!uploadFileInfo ? (
-        <Button icon={<UploadOutlined />} onClick={handleOnUploadButtonClick}>
-          Upload CSV
-        </Button>
-      ) : (
-        <TableFileInfo>
-          <tbody>
-            <tr>
-              <td>Name:</td>
-              <td>{uploadFileInfo.name}</td>
-            </tr>
-            <tr>
-              <td>Size:</td>
-              <td>{formatBytes(uploadFileInfo.size)}</td>
-            </tr>
-          </tbody>
-        </TableFileInfo>
-      )}
-    </ExportManagerWrapper>
+    <Form layout="vertical">
+      <ExportManagerWrapper>
+        <CSVReader inputId={uploadInputID} onFileLoaded={hansleOnFilLoaded} />
+        {!uploadFileInfo ? (
+          <Row type="flex" gutter={16}>
+            <Col>
+              <Form.Item label="Service name">
+                <Select
+                  placeholder="Select service"
+                  style={{ width: 300 }}
+                  onChange={(name) => setServiceName(name)}
+                >
+                  {serviceNameList.map((name) => (
+                    <Option key={name}>{camelCaseToWord(name)}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col>
+              <Form.Item label={<div />}>
+                <Button
+                  disabled={!serviceName}
+                  icon={<UploadOutlined />}
+                  onClick={handleOnUploadButtonClick}
+                >
+                  Upload CSV
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        ) : (
+          <TableFileInfo>
+            <tbody>
+              <tr>
+                <td>Name:</td>
+                <td>{uploadFileInfo.name}</td>
+              </tr>
+              <tr>
+                <td>Size:</td>
+                <td>{formatBytes(uploadFileInfo.size)}</td>
+              </tr>
+            </tbody>
+          </TableFileInfo>
+        )}
+      </ExportManagerWrapper>
+    </Form>
   )
 
   function handleOnUploadButtonClick() {
@@ -46,7 +75,7 @@ function ExportManager({ brand, onCompleted }) {
   }
 
   function hansleOnFilLoaded(rawData, fileInfo) {
-    const service = services[brand]
+    const service = services[serviceName]
 
     if (typeof service !== 'function') {
       return
@@ -66,12 +95,11 @@ function ExportManager({ brand, onCompleted }) {
       return result
     })
 
-    onCompleted(service(csvData), brand)
+    onCompleted(service(csvData), serviceName)
   }
 }
 
 ExportManager.propTypes = {
-  brand: PropTypes.string.isRequired,
   onCompleted: PropTypes.func,
 }
 

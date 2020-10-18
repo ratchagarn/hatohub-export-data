@@ -1,5 +1,5 @@
-import foodPanda from './foodPanda'
+import foodPandaExtrackLineItem from './foodPandaExtrackLineItem'
 
 export default {
-  foodPanda,
+  foodPandaExtrackLineItem,
 }

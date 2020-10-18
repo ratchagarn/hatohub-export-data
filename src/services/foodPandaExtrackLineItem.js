@@ -1,8 +1,8 @@
-function foodPanda(csvData) {
+function foodPandaExtrackLineItem(csvData) {
   let _id = 0
   const rawLineItemData = csvData.map((record) => record.Items)
 
-  const result = rawLineItemData
+  const extractedData = rawLineItemData
     .filter((item) => item != null)
     .map((rawData) => {
       const spliter = /\[.*\]/.test(rawData) ? '], ' : ','
@@ -12,7 +12,7 @@ function foodPanda(csvData) {
       rawData.split(spliter).forEach((item) => {
         content = item.trim()
 
-        // console.log(result)
+        // console.log(extractedData)
 
         if (/\[/.test(content) && !/\]/.test(content)) {
           content += ']'
@@ -34,6 +34,14 @@ function foodPanda(csvData) {
         lineItems: extractLineItem(lineItems),
       }
     })
+
+  const result = []
+
+  extractedData.forEach((row) => {
+    row.lineItems.forEach((lineItem) => {
+      result.push(lineItem)
+    })
+  })
 
   return result
 
@@ -59,4 +67,4 @@ function foodPanda(csvData) {
   }
 }
 
-export default foodPanda
+export default foodPandaExtrackLineItem

@@ -96,20 +96,8 @@ function App() {
     setLoading(true)
   }
 
-  function handleOnComplete(result, brand) {
-    if (brand === 'foodPanda') {
-      const downloadContent = []
-
-      result.forEach((row) => {
-        row.lineItems.forEach((lineItem) => {
-          downloadContent.push(lineItem)
-        })
-      })
-
-      setDownloadData(downloadContent)
-    } else {
-      message.error(`We are not support brand: ${brand}`)
-    }
+  function handleOnComplete(result, serviceName) {
+    setDownloadData(result)
   }
 
   function createFieldColumnsForCSV(firstRow) {
