@@ -1,4 +1,15 @@
 function foodPandaExtrackLineItem(csvData) {
+  if (
+    typeof csvData[0].Order_ID !== 'string' ||
+    typeof csvData[0].Items !== 'string'
+  ) {
+    return {
+      error: {
+        message: 'Missing field "Order ID" and "Items"',
+      },
+    }
+  }
+
   let _id = 0
   const rawLineItemData = csvData.map((record) => record.Items)
 
@@ -43,7 +54,10 @@ function foodPandaExtrackLineItem(csvData) {
     })
   })
 
-  return result
+  return {
+    error: null,
+    result,
+  }
 
   function extractLineItem(data) {
     return data.map((item) => {

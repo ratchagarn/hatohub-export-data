@@ -24,7 +24,7 @@ function ExportManager({ onCompleted }) {
         {!uploadFileInfo ? (
           <Row type="flex" gutter={16}>
             <Col>
-              <Form.Item label="Service name">
+              <Form.Item noStyle>
                 <Select
                   placeholder="Select service"
                   style={{ width: 300 }}
@@ -37,7 +37,7 @@ function ExportManager({ onCompleted }) {
               </Form.Item>
             </Col>
             <Col>
-              <Form.Item label={<div />}>
+              <Form.Item noStyle>
                 <Button
                   disabled={!serviceName}
                   icon={<UploadOutlined />}
