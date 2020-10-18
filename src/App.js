@@ -82,6 +82,7 @@ function App() {
                 rowKey="_id"
                 dataSource={downloadData}
                 columns={createTableColumn(downloadData[0])}
+                bordered
               />
             </Fragment>
           )}
