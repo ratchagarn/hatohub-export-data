@@ -1,10 +1,25 @@
-function foodPanda(csvData) {
+import get from 'lodash/get'
+
+function foodPandaExtrackLineItem(csvData) {
+  if (
+    typeof csvData[0].Order_ID !== 'string' ||
+    typeof csvData[0].Items !== 'string'
+  ) {
+    return {
+      error: {
+        message: 'Missing field "Order ID" and "Items"',
+      },
+    }
+  }
+
   let _id = 0
   const rawLineItemData = csvData.map((record) => record.Items)
 
-  const result = rawLineItemData
+  const extractedData = rawLineItemData
     .filter((item) => item != null)
-    .map((rawData) => {
+    .map((rawData, index) => {
+      const orderID = get(csvData[index], 'Order_ID')
+
       const spliter = /\[.*\]/.test(rawData) ? '], ' : ','
       let content
       let lineItems = []
@@ -12,7 +27,7 @@ function foodPanda(csvData) {
       rawData.split(spliter).forEach((item) => {
         content = item.trim()
 
-        // console.log(result)
+        // console.log(extractedData)
 
         if (/\[/.test(content) && !/\]/.test(content)) {
           content += ']'
@@ -31,13 +46,22 @@ function foodPanda(csvData) {
 
       return {
         rawData: rawData,
-        lineItems: extractLineItem(lineItems),
+        lineItems: extractLineItem(lineItems, orderID),
       }
     })
 
-  return result
+  const result = []
 
-  function extractLineItem(data) {
+  extractedData.forEach((row) => {
+    row.lineItems.forEach((lineItem) => result.push(lineItem))
+  })
+
+  return {
+    error: null,
+    result,
+  }
+
+  function extractLineItem(data, orderID) {
     return data.map((item) => {
       const qty = item.match(/^([0-9]+)/)
       const store = item.match(/^[0-9]+\s+([A-Z]{2})/)
@@ -50,6 +74,7 @@ function foodPanda(csvData) {
 
       return {
         _id,
+        orderID,
         qty: qty ? Number(qty[0]) : '',
         store: store ? store[1] : '',
         menu: menu ? (menu[1] ? menu[1] : menu[2]) : '',
@@ -59,4 +84,4 @@ function foodPanda(csvData) {
   }
 }
 
-export default foodPanda
+export default foodPandaExtrackLineItem
