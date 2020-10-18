@@ -30,7 +30,6 @@ function App() {
   return (
     <AppLayout>
       <Title>Hatohub Export Data</Title>
-      <Loading />
       {loading ? (
         <Loading />
       ) : (
