@@ -1,14 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Row, Col, Table, Button, message } from 'antd'
-import {
-  DownloadOutlined,
-  LoadingOutlined,
-  RedoOutlined,
-} from '@ant-design/icons'
+import { DownloadOutlined, RedoOutlined } from '@ant-design/icons'
 import CsvDownloader from 'react-csv-downloader'
 import dayjs from 'dayjs'
 
+import Loading from 'components/Loading'
 import ExportManager from 'components/ExportManager'
 
 import './App.css'
@@ -33,8 +30,9 @@ function App() {
   return (
     <AppLayout>
       <Title>Hatohub Export Data</Title>
+      <Loading />
       {loading ? (
-        <LoadingOutlined />
+        <Loading />
       ) : (
         <Fragment>
           <Row type="flex" gutter={32}>
@@ -42,23 +40,16 @@ function App() {
               <ExportManager onCompleted={handleOnComplete} />
             </Col>
             {downloadData && (
-              <Col>
-                <Button
-                  type="dashed"
-                  icon={<RedoOutlined />}
-                  onClick={handleOnReload}
-                >
-                  Upload New file
-                </Button>
-              </Col>
-            )}
-          </Row>
-
-          <Separator />
-
-          {downloadData && (
-            <Fragment>
-              <Row type="flex" gutter={32}>
+              <Fragment>
+                <Col>
+                  <Button
+                    type="dashed"
+                    icon={<RedoOutlined />}
+                    onClick={handleOnReload}
+                  >
+                    Upload New file
+                  </Button>
+                </Col>
                 <Col>
                   <DownloadLinkContainer>
                     <CsvDownloader
@@ -75,8 +66,14 @@ function App() {
                     </CsvDownloader>
                   </DownloadLinkContainer>
                 </Col>
-              </Row>
+              </Fragment>
+            )}
+          </Row>
 
+          <Separator />
+
+          {downloadData && (
+            <Fragment>
               <TableTitle>Output Preview</TableTitle>
               <Table
                 rowKey="_id"
