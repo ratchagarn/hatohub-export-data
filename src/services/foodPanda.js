@@ -50,10 +50,10 @@ function foodPanda(csvData) {
 
       return {
         _id,
-        qty: qty ? Number(qty[0]) : null,
-        store: store ? store[1] : null,
-        menu: menu ? (menu[1] ? menu[1] : menu[2]) : null,
-        option: option ? option[1] : null,
+        qty: qty ? Number(qty[0]) : '',
+        store: store ? store[1] : '',
+        menu: menu ? (menu[1] ? menu[1] : menu[2]) : '',
+        option: option ? option[1] : '',
       }
     })
   }
