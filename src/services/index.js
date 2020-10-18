@@ -1,5 +1,5 @@
-import foodPanda from "./foodPanda";
+import foodPanda from './foodPanda'
 
 export default {
   foodPanda,
-};
+}
