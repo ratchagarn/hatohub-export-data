@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Row, Col, Table, Button, Tag, message } from 'antd'
+import { Row, Col, Table, Button, Tag } from 'antd'
 import { DownloadOutlined, RedoOutlined } from '@ant-design/icons'
 import CsvDownloader from 'react-csv-downloader'
 import dayjs from 'dayjs'
