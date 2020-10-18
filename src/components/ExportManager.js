@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Button } from 'antd'
@@ -21,11 +21,18 @@ function ExportManager({ brand, onCompleted }) {
           Upload CSV
         </Button>
       ) : (
-        <Fragment>
-          <FileName>{uploadFileInfo.name}</FileName>
-          <Arrow>→</Arrow>
-          <FileSize>{formatBytes(uploadFileInfo.size)}</FileSize>
-        </Fragment>
+        <TableFileInfo>
+          <tbody>
+            <tr>
+              <td>Name:</td>
+              <td>{uploadFileInfo.name}</td>
+            </tr>
+            <tr>
+              <td>Size:</td>
+              <td>{formatBytes(uploadFileInfo.size)}</td>
+            </tr>
+          </tbody>
+        </TableFileInfo>
       )}
     </ExportManagerWrapper>
   )
@@ -87,14 +94,14 @@ const ExportManagerWrapper = styled.div`
   }
 `
 
-const FileName = styled.span`
-  font-weight: bold;
-`
+const TableFileInfo = styled.table`
+  td {
+    padding: 0;
+    height: 32px;
 
-const FileSize = styled.span`
-  text-decoration: underline;
-`
-
-const Arrow = styled.span`
-  margin: 0 8px;
+    &:first-child {
+      padding-right: 8px;
+      font-weight: bold;
+    }
+  }
 `
