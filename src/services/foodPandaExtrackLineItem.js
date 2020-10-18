@@ -1,3 +1,5 @@
+import get from 'lodash/get'
+
 function foodPandaExtrackLineItem(csvData) {
   if (
     typeof csvData[0].Order_ID !== 'string' ||
@@ -15,7 +17,9 @@ function foodPandaExtrackLineItem(csvData) {
 
   const extractedData = rawLineItemData
     .filter((item) => item != null)
-    .map((rawData) => {
+    .map((rawData, index) => {
+      const orderID = get(csvData[index], 'Order_ID')
+
       const spliter = /\[.*\]/.test(rawData) ? '], ' : ','
       let content
       let lineItems = []
@@ -42,16 +46,14 @@ function foodPandaExtrackLineItem(csvData) {
 
       return {
         rawData: rawData,
-        lineItems: extractLineItem(lineItems),
+        lineItems: extractLineItem(lineItems, orderID),
       }
     })
 
   const result = []
 
   extractedData.forEach((row) => {
-    row.lineItems.forEach((lineItem) => {
-      result.push(lineItem)
-    })
+    row.lineItems.forEach((lineItem) => result.push(lineItem))
   })
 
   return {
@@ -59,7 +61,7 @@ function foodPandaExtrackLineItem(csvData) {
     result,
   }
 
-  function extractLineItem(data) {
+  function extractLineItem(data, orderID) {
     return data.map((item) => {
       const qty = item.match(/^([0-9]+)/)
       const store = item.match(/^[0-9]+\s+([A-Z]{2})/)
@@ -72,6 +74,7 @@ function foodPandaExtrackLineItem(csvData) {
 
       return {
         _id,
+        orderID,
         qty: qty ? Number(qty[0]) : '',
         store: store ? store[1] : '',
         menu: menu ? (menu[1] ? menu[1] : menu[2]) : '',
