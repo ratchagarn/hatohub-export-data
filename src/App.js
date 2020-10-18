@@ -33,7 +33,22 @@ function App() {
         <LoadingOutlined />
       ) : (
         <Fragment>
-          <ExportManager onCompleted={handleOnComplete} />
+          <Row type="flex" gutter={32}>
+            <Col>
+              <ExportManager onCompleted={handleOnComplete} />
+            </Col>
+            {downloadData && (
+              <Col>
+                <Button
+                  type="dashed"
+                  icon={<RedoOutlined />}
+                  onClick={handleOnReload}
+                >
+                  Upload New file
+                </Button>
+              </Col>
+            )}
+          </Row>
 
           <Separator />
 
@@ -53,17 +68,6 @@ function App() {
                   </CsvDownloader>
                 </DownloadLinkContainer>
               </Col>
-              {downloadData && (
-                <Col>
-                  <Button
-                    type="dashed"
-                    icon={<RedoOutlined />}
-                    onClick={handleOnReload}
-                  >
-                    Upload New file
-                  </Button>
-                </Col>
-              )}
             </Row>
           )}
         </Fragment>
