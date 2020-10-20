@@ -1,0 +1,1 @@
+{"version":3,"sources":["App.css"],"names":[],"mappings":"AAEA,mBACE,wBACF","file":"main.35f924fe.chunk.css","sourcesContent":["@import '~antd/dist/antd.css';\n\n.ant-table-content {\n  border: 1px solid ghostwhite;\n}\n"]}
